@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large/real audio — uncomment if you move real tracks out of git.
+# Placeholder tones are small and stay tracked so the repo runs out of the box.
+# audio/*.ogg
+# audio/*.wav
