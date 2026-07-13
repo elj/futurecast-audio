@@ -28,5 +28,24 @@ VOLUME_CEIL = 1.0
 # This is an instant level change (no fade engine).
 DUCK = 0.5
 
+# --- Button board (MCP23017 over I2C) ---
+I2C_BUS = 1           # Pi header I2C (pins 3/5) is bus 1
+MCP23017_ADDR = 0x21
+
+# Expander pin numbers: 0-7 = port A (GPA0-7), 8-15 = port B (GPB0-7),
+# matching the Arduino test sketch (Channel_board_demo.ino).
+VOL_UP_PIN = 13       # GPB5, no LED
+VOL_DOWN_PIN = 15     # GPB7, no LED
+
+# Expander pin -> channel id (1..14). PLACEHOLDER (pins in order, skipping
+# the volume pins) — run `python button_service.py --map` on the Pi and
+# paste the real mapping here.
+PIN_TO_CHANNEL = {
+    0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7,
+    7: 8, 8: 9, 9: 10, 10: 11, 11: 12, 12: 13, 14: 14,
+}
+
+POLL_HZ = 50          # button scan rate; debounce = two consecutive reads
+
 # Audio format used for real tracks: prefer .ogg or .wav (reliable in pygame-ce).
 # Avoid .mp3 (patchy support across builds).

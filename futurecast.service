@@ -1,0 +1,28 @@
+# Futurecast autostart — systemd USER unit (runs as your login user, so it
+# reaches the same PipeWire/Pulse audio session that made the USB interface
+# the default output).
+#
+# Install on the Pi:
+#   mkdir -p ~/.config/systemd/user
+#   cp futurecast.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now futurecast
+#   loginctl enable-linger $USER     # start at boot without a login
+#
+# Watch it:  journalctl --user -u futurecast -f
+#
+# %h = your home directory. Adjust the two paths if the clone or venv
+# live somewhere else.
+
+[Unit]
+Description=Futurecast audio + button board
+After=sound.target
+
+[Service]
+WorkingDirectory=%h/futurecast-audio
+ExecStart=%h/futurecast-audio/venv/bin/python run.py
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target
