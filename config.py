@@ -32,17 +32,28 @@ DUCK = 0.5
 I2C_BUS = 1           # Pi header I2C (pins 3/5) is bus 1
 MCP23017_ADDR = 0x21
 
-# Expander pin numbers: 0-7 = port A (GPA0-7), 8-15 = port B (GPB0-7),
-# matching the Arduino test sketch (Channel_board_demo.ino).
-VOL_UP_PIN = 13       # GPB5, no LED
-VOL_DOWN_PIN = 15     # GPB7, no LED
+# Expander pin numbers: 0-7 = port A (GPA0-7), 8-15 = port B (GPB0-7).
+# Measured on the real board with `button_service.py --map`, 2026-07-12.
+VOL_UP_PIN = 15       # GPB7, no LED
+VOL_DOWN_PIN = 14     # GPB6, no LED
 
-# Expander pin -> channel id (1..14). PLACEHOLDER (pins in order, skipping
-# the volume pins) — run `python button_service.py --map` on the Pi and
-# paste the real mapping here.
+# Expander pin -> channel id (1..14). Board is wired mostly in reverse
+# order, except channel 10 on GPB0.
 PIN_TO_CHANNEL = {
-    0: 1, 1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7,
-    7: 8, 8: 9, 9: 10, 10: 11, 11: 12, 12: 13, 14: 14,
+     0: 14,
+     1: 13,
+     2: 12,
+     3: 11,
+     4:  9,
+     5:  8,
+     6:  7,
+     7:  6,
+     8: 10,
+     9:  5,
+    10:  4,
+    11:  3,
+    12:  2,
+    13:  1,
 }
 
 POLL_HZ = 50          # button scan rate; debounce = two consecutive reads
