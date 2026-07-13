@@ -106,7 +106,7 @@ def run_mapping():
     for pin in range(16):
         mcp.input_pullup(pin)
 
-    print("Button mapping mode — press each channel button when asked.")
+    print("Button mapping mode - press each channel button when asked.")
     print("Captured buttons light their LED as confirmation. Ctrl-C aborts.\n")
 
     mapping = {}  # pin -> channel
@@ -116,11 +116,11 @@ def run_mapping():
         while True:
             pin = _wait_press(mcp)
             if pin in (config.VOL_UP_PIN, config.VOL_DOWN_PIN):
-                print(f"\n  (pin {pin} is a volume button — press a channel "
+                print(f"\n  (pin {pin} is a volume button - press a channel "
                       "button) ... ", end="", flush=True)
                 continue
             if pin in mapping:
-                print(f"\n  (pin {pin} is already channel {mapping[pin]} — "
+                print(f"\n  (pin {pin} is already channel {mapping[pin]} - "
                       "press a different button) ... ", end="", flush=True)
                 continue
             break
