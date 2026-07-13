@@ -101,35 +101,51 @@ def _wait_press(mcp):
                 return pin
 
 
+def _pin_name(pin):
+    port, bit = divmod(pin, 8)
+    return f"pin {pin:2d} (GP{'AB'[port]}{bit})"
+
+
+def _capture(mcp, label, taken):
+    """Prompt for `label`, wait for a press on a pin not already captured."""
+    print(f"Press the button for {label} ... ", end="", flush=True)
+    while True:
+        pin = _wait_press(mcp)
+        if pin in taken:
+            print(f"\n  ({_pin_name(pin)} is already {taken[pin]} - "
+                  "press a different button) ... ", end="", flush=True)
+            continue
+        print(_pin_name(pin))
+        return pin
+
+
 def run_mapping():
+    """Identify every button by pressing it - no assumptions about wiring."""
     mcp = MCP23017(config.I2C_BUS, config.MCP23017_ADDR)
     for pin in range(16):
         mcp.input_pullup(pin)
 
-    print("Button mapping mode - press each channel button when asked.")
-    print("Captured buttons light their LED as confirmation. Ctrl-C aborts.\n")
+    print("Button mapping mode - press each button when asked.")
+    print("Captured channel buttons light their LED as confirmation. "
+          "Ctrl-C aborts.\n")
+
+    taken = {}  # pin -> description, for duplicate rejection
+
+    vol_up = _capture(mcp, "VOLUME UP", taken)
+    taken[vol_up] = "VOLUME UP"
+    vol_down = _capture(mcp, "VOLUME DOWN", taken)
+    taken[vol_down] = "VOLUME DOWN"
 
     mapping = {}  # pin -> channel
     for channel in range(1, 15):
-        print(f"Press the button for CHANNEL {channel:2d} ... ",
-              end="", flush=True)
-        while True:
-            pin = _wait_press(mcp)
-            if pin in (config.VOL_UP_PIN, config.VOL_DOWN_PIN):
-                print(f"\n  (pin {pin} is a volume button - press a channel "
-                      "button) ... ", end="", flush=True)
-                continue
-            if pin in mapping:
-                print(f"\n  (pin {pin} is already channel {mapping[pin]} - "
-                      "press a different button) ... ", end="", flush=True)
-                continue
-            break
+        pin = _capture(mcp, f"CHANNEL {channel:2d}", taken)
+        taken[pin] = f"channel {channel}"
         mapping[pin] = channel
         mcp.output_low(pin)  # leave the LED on as feedback
-        port, bit = divmod(pin, 8)
-        print(f"pin {pin:2d} (GP{'AB'[port]}{bit})")
 
     print("\nDone. Paste this into config.py:\n")
+    print(f"VOL_UP_PIN = {vol_up}")
+    print(f"VOL_DOWN_PIN = {vol_down}")
     print("PIN_TO_CHANNEL = {")
     for pin in sorted(mapping):
         print(f"    {pin:2d}: {mapping[pin]:2d},")
