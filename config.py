@@ -61,7 +61,7 @@ POLL_HZ = 50          # button scan rate; debounce = two consecutive reads
 # --- Fairy lights (non-addressable strands, PWM via 2N7000 MOSFET) ---
 # Synced to the Pixelblaze day/night cycle by polling its exported `phase`
 # var over WebSocket (read-only — the Pixelblaze keeps its own timing).
-PIXELBLAZE_URL = "ws://pixelblaze.local:81"  # or ws://<ip>:81
+PIXELBLAZE_URL = "ws://192.168.1.49:81"
 FAIRY_GPIO = 18            # MOSFET gate pin
 FAIRY_PWM_HZ = 400
 FAIRY_POLL_S = 2.0         # how often to ask the Pixelblaze for phase
