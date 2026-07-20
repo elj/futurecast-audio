@@ -12,8 +12,15 @@ play one track once, then drop back to ambience.
 - `mcp23017.py` — minimal I2C driver for the button board's expander.
 - `button_service.py` — reads the real buttons (time-shared button/LED pins,
   debounce); `--map` = interactive pin→channel mapping helper.
-- `run.py` — headless operation mode: engine + buttons, no window. This is
-  what autostarts.
+- `fairy_lights.py` — background thread that PWM-dims the fairy-light strands
+  (2N7000 on GPIO 18) in sync with the Pixelblaze day/night `phase`, polled
+  over WebSocket. Config in `config.py` (`FAIRY_*`, `PIXELBLAZE_URL`).
+  Wiring + tuning notes: `../fairy-lights/README.md`. Runs standalone for
+  testing: `python3 fairy_lights.py`. Needs `python3-websocket` +
+  `python3-gpiozero` (apt). Fails soft: no GPIO or no Pixelblaze never
+  affects audio.
+- `run.py` — headless operation mode: engine + buttons + fairy lights, no
+  window. This is what autostarts.
 - `futurecast.service` — systemd user unit for autostart (install notes inside).
 - `audio/` — placeholder sounds (generated tones). Swap in real `.ogg`/`.wav`.
 

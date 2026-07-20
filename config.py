@@ -58,5 +58,23 @@ PIN_TO_CHANNEL = {
 
 POLL_HZ = 50          # button scan rate; debounce = two consecutive reads
 
+# --- Fairy lights (non-addressable strands, PWM via 2N7000 MOSFET) ---
+# Synced to the Pixelblaze day/night cycle by polling its exported `phase`
+# var over WebSocket (read-only — the Pixelblaze keeps its own timing).
+PIXELBLAZE_URL = "ws://pixelblaze.local:81"  # or ws://<ip>:81
+FAIRY_GPIO = 18            # MOSFET gate pin
+FAIRY_PWM_HZ = 400
+FAIRY_POLL_S = 2.0         # how often to ask the Pixelblaze for phase
+FAIRY_TICK_S = 0.05        # LED update rate (smooths between polls)
+FAIRY_SLEW_PER_S = 0.25    # max brightness change per second
+FAIRY_MAX_BRIGHTNESS = 1.0 # cap if the strands are too bright at full
+
+# Night window, in phase terms — matches the pattern keyframes
+# (sunset 0.72, dusk 0.84, first light 0.12, sunrise 0.22):
+FAIRY_FADE_UP_START = 0.80   # begin fading up (late sunset)
+FAIRY_FADE_UP_END = 0.90     # fully on (nightfall)
+FAIRY_FADE_DOWN_START = 0.08 # begin fading out (pre-dawn)
+FAIRY_FADE_DOWN_END = 0.18   # fully off (early dawn)
+
 # Audio format used for real tracks: prefer .ogg or .wav (reliable in pygame-ce).
 # Avoid .mp3 (patchy support across builds).

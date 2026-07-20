@@ -11,12 +11,16 @@ import time
 import config
 from audio_engine import AudioEngine
 from button_service import ButtonBoard
+from fairy_lights import FairyLights
 from mcp23017 import MCP23017
 
 
 def main():
     engine = AudioEngine(config.AMBIENCE, config.CHANNELS)
     engine.start_ambience()
+
+    fairy = FairyLights()
+    fairy.start()
 
     mcp = MCP23017(config.I2C_BUS, config.MCP23017_ADDR)
     board = ButtonBoard(
@@ -42,6 +46,7 @@ def main():
         engine.update()
         time.sleep(period)
 
+    fairy.stop()
     mcp.close()
 
 
