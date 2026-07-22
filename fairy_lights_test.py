@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Futurecast — fairy-light BENCH TEST (no Pixelblaze needed).
+Futurecast - fairy-light BENCH TEST (no Pixelblaze needed).
 
 Drives the MOSFET on the fairy-light GPIO directly so you can check wiring,
-the strands, and the warm-white 0402s, and pick a good FAIRY_MAX_BRIGHTNESS —
+the strands, and the warm-white 0402s, and pick a good FAIRY_MAX_BRIGHTNESS -
 all without any network or Pixelblaze. Pin, PWM frequency, gamma, and
 brightness cap come from config.py, so this matches fairy_lights.py exactly.
 
@@ -34,7 +34,7 @@ def apply(led, level):
 
 
 def fade_loop(led):
-    print("Fade up/down loop — Ctrl-C to stop.")
+    print("Fade up/down loop - Ctrl-C to stop.")
     tick = 0.05
     steps = int(FADE_SECONDS / tick)
     while True:
@@ -49,7 +49,7 @@ def fade_loop(led):
 
 
 def blink(led):
-    print("Blink 1 s on / 1 s off — Ctrl-C to stop.")
+    print("Blink 1 s on / 1 s off - Ctrl-C to stop.")
     while True:
         apply(led, 1.0)
         time.sleep(1.0)
@@ -67,18 +67,18 @@ def main():
             blink(led)
         elif arg == "on":
             apply(led, 1.0)
-            print("Full on — Ctrl-C to exit.")
+            print("Full on - Ctrl-C to exit.")
             while True:
                 time.sleep(1)
         elif arg == "off":
             apply(led, 0.0)
-            print("Off — Ctrl-C to exit.")
+            print("Off - Ctrl-C to exit.")
             while True:
                 time.sleep(1)
         else:
             level = float(arg)          # e.g. 0.4
             apply(led, level)
-            print(f"Holding at {level:.0%} — Ctrl-C to exit.")
+            print(f"Holding at {level:.0%} - Ctrl-C to exit.")
             while True:
                 time.sleep(1)
     except KeyboardInterrupt:
